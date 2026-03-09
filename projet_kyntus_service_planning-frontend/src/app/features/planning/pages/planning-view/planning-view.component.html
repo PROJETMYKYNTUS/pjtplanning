@@ -1,0 +1,255 @@
+<div class="page-wrapper">
+
+  <div class="state-loading" *ngIf="loading">
+    <div class="big-spinner"></div>
+    <p>Chargement du planning...</p>
+  </div>
+
+  <ng-container *ngIf="!loading && planning">
+
+    <!-- HEADER -->
+    <div class="page-header">
+      <button class="btn-back" (click)="goBack()">← Retour</button>
+      <div class="header-info">
+        <h1 class="page-title">📅 {{ planning.weekCode }}</h1>
+        <p class="page-sub">
+          {{ planning.subServiceName }} · {{ planning.assignments.length }} employés
+        </p>
+      </div>
+      <div class="header-actions">
+        <span class="status-badge" [ngClass]="getStatusClass(planning.status)">
+          {{ getStatusLabel(planning.status) }}
+        </span>
+        <button class="btn-publish"
+          *ngIf="planning.status === 'Draft'"
+          [disabled]="publishing"
+          (click)="publishPlanning()">
+          <span *ngIf="!publishing">🚀 Publier</span>
+          <span *ngIf="publishing">Publication...</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="alert-success" *ngIf="successMsg">✅ {{ successMsg }}</div>
+    <div class="alert-error"   *ngIf="error">⚠️ {{ error }}</div>
+
+    <!-- KPI SHIFTS -->
+    <div class="kpi-row">
+      <div class="kpi-card" *ngFor="let cfg of planning.shiftConfigs">
+        <div class="kpi-shift" [ngClass]="getShiftColor(cfg.shiftLabel)">
+          {{ cfg.shiftLabel }}
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-count">{{ cfg.requiredCount }}</span>
+          <span class="kpi-label">employés / jour</span>
+        </div>
+        <div class="kpi-pct">{{ cfg.percentage }}%</div>
+      </div>
+      <div class="kpi-card kpi-total">
+        <div class="kpi-shift shift-total">Total</div>
+        <div class="kpi-body">
+          <span class="kpi-count">{{ planning.totalEffectif }}</span>
+          <span class="kpi-label">effectif total</span>
+        </div>
+        <div class="kpi-pct">100%</div>
+      </div>
+    </div>
+
+    <!-- GRILLE PLANNING -->
+    <div class="grid-wrapper">
+      <table class="planning-grid">
+        <thead>
+          <tr>
+            <th class="col-employee">Employé</th>
+            <th *ngFor="let day of days"
+                [ngClass]="{'col-saturday': day === 'Saturday'}">
+              <div class="th-day">{{ dayLabels[day] }}</div>
+              <div class="th-date" *ngIf="planning.weekStartDate">
+                {{ getDateForDay(planning.weekStartDate, day) }}
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let emp of planning.assignments"
+              [class.row-new]="emp.isNewEmployee">
+
+            <!-- Employé -->
+           <!-- Remplacer td class="cell-employee" par : -->
+<td class="cell-employee">
+  <div class="emp-info">
+    <div class="emp-avatar">{{ emp.fullName[0] }}</div>
+    <div class="emp-details">
+      <span class="emp-name">{{ emp.fullName }}</span>
+      <span class="emp-tag" *ngIf="emp.isNewEmployee">🆕</span>
+    </div>
+  </div>
+
+  <!-- ✅ Bouton commentaire (seulement en Draft) -->
+  <div class="emp-comment-row" *ngIf="planning.status === 'Draft'">
+    <button class="btn-comment"
+            (click)="openCommentModal(emp, $event)"
+            [title]="emp.managerComment ? 'Modifier le commentaire' : 'Ajouter un commentaire'">
+      {{ emp.managerComment ? '💬' : '➕' }}
+    </button>
+    <button class="btn-delete-comment"
+            *ngIf="emp.managerComment"
+            (click)="deleteComment(emp, $event)"
+            title="Supprimer le commentaire">🗑️</button>
+  </div>
+
+  <!-- ✅ Afficher le commentaire existant -->
+  <div class="emp-comment-display" *ngIf="emp.managerComment">
+    <span class="comment-icon">💬</span>
+    <span class="comment-text">{{ emp.managerComment }}</span>
+  </div>
+</td>
+
+            <!-- Shifts par jour -->
+            <td *ngFor="let day of days"
+                class="cell-shift"
+                [ngClass]="{'cell-saturday': day === 'Saturday'}">
+
+              <ng-container *ngIf="getAssignment(emp, day) as a; else noShift">
+
+                <!-- Congé -->
+                <div class="shift-conge" *ngIf="a.isOnLeave">
+                  <span>🏖️ Congé</span>
+                </div>
+
+                <!-- Shift normal -->
+                <ng-container *ngIf="!a.isOnLeave">
+
+                  <!-- ✅ Shift pill cliquable pour modifier le shift -->
+                  <div class="shift-pill"
+                       [ngClass]="getShiftColor(a.shiftLabel)"
+                       (click)="openOverride(emp, day, $event)"
+                       title="Cliquer pour modifier le shift">
+                    <span class="shift-label">{{ a.shiftLabel }}</span>
+                    <span class="shift-time">{{ a.startTime }}</span>
+                    <span class="override-icon"
+                          *ngIf="a.isManagerOverride">✏️</span>
+                  </div>
+
+                  <!-- ✅ Badge pause cliquable pour modifier la pause -->
+                  <div class="break-badge"
+                       *ngIf="a.breakTime"
+                       (click)="openBreakOverride(emp, day, $event)"
+                       title="Cliquer pour modifier la pause">
+                    🍽 {{ a.breakTime }}
+                    <span class="break-edit-icon">✏️</span>
+                  </div>
+
+                </ng-container>
+
+              </ng-container>
+              <ng-template #noShift>
+                <div class="shift-off">OFF</div>
+              </ng-template>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LÉGENDE DYNAMIQUE -->
+    <div class="legend">
+      <span class="legend-title">Légende :</span>
+      <div class="legend-item"
+           *ngFor="let label of getUniqueShiftLabels()">
+        <span class="shift-pill mini" [ngClass]="getShiftColor(label)">
+          {{ label }}
+        </span>
+      </div>
+      <div class="legend-item">
+        <span class="shift-off mini">OFF</span> Repos
+      </div>
+      <div class="legend-item">
+        <span class="shift-conge mini">🏖️</span> Congé
+      </div>
+      <div class="legend-item">
+        <span class="override-icon">✏️</span> Modifié
+      </div>
+      <div class="legend-item">
+        <span class="break-badge mini">🍽 12:00</span> Pause déjeuner
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- ── MODAL OVERRIDE SHIFT ── -->
+  <div class="modal-overlay" *ngIf="showOverride" (click)="closeOverride()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">✏️ Modifier le shift</h3>
+      <p class="modal-sub">
+        <strong>{{ selectedEmployeeName }}</strong> — {{ selectedDay }}
+      </p>
+      <div class="form-group">
+        <label>Nouveau shift</label>
+        <select [(ngModel)]="selectedNewShiftId">
+          <option [value]="0" disabled>-- Choisir --</option>
+          <option *ngFor="let s of shifts" [value]="s.id">
+            {{ s.label }} ({{ s.startTime }})
+          </option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel"  (click)="closeOverride()">Annuler</button>
+        <button class="btn-confirm" [disabled]="!selectedNewShiftId"
+                (click)="confirmOverride()">Confirmer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ NOUVEAU — MODAL OVERRIDE PAUSE -->
+  <div class="modal-overlay" *ngIf="showBreakOverride" (click)="closeBreakOverride()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">🍽 Modifier la pause déjeuner</h3>
+      <p class="modal-sub">
+        <strong>{{ selectedBreakEmployeeName }}</strong> — {{ selectedBreakDay }}
+      </p>
+      <div class="form-group">
+        <label>Nouvelle heure de pause</label>
+        <select [(ngModel)]="selectedNewBreakTime">
+          <option value="" disabled>-- Choisir --</option>
+          <option *ngFor="let opt of breakSlotOptions" [value]="opt.value">
+            {{ opt.label }}
+          </option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel"  (click)="closeBreakOverride()">Annuler</button>
+        <button class="btn-confirm" [disabled]="!selectedNewBreakTime"
+                (click)="confirmBreakOverride()">Confirmer</button>
+      </div>
+    </div>
+  </div>
+<!-- ✅ MODAL COMMENTAIRE -->
+<div class="modal-overlay" *ngIf="showCommentModal" (click)="closeCommentModal()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <h3 class="modal-title">💬 Note pour l'employé</h3>
+    <p class="modal-sub">
+      <strong>{{ commentEmployeeName }}</strong>
+    </p>
+    <div class="form-group">
+      <label>Commentaire <span class="char-count">{{ commentText.length }}/500</span></label>
+      <textarea
+        [(ngModel)]="commentText"
+        maxlength="500"
+        rows="4"
+        placeholder="Ex: Tu travailles samedi prochain, merci de prévoir...">
+      </textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel"  (click)="closeCommentModal()">Annuler</button>
+      <button class="btn-confirm"
+              [disabled]="!commentText.trim() || savingComment"
+              (click)="saveComment()">
+        <span *ngIf="!savingComment">💾 Sauvegarder</span>
+        <span *ngIf="savingComment">Sauvegarde...</span>
+      </button>
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,152 @@
+/* ===== PAGE WRAPPER ===== */
+.page {
+  padding: 40px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ===== HEADER ===== */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  color: white;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.page-header p {
+  margin: 4px 0 0;
+  opacity: 0.8;
+  font-size: 14px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ===== CARD ===== */
+.card-container {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* ===== STATES ===== */
+.state {
+  text-align: center;
+  padding: 40px;
+}
+
+.state.error {
+  color: red;
+}
+
+/* ===== TABLE ===== */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #1e3a66;
+  color: white;
+}
+
+th, td {
+  padding: 14px;
+  text-align: left;
+  font-size: 14px;
+}
+
+tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: 0.2s ease;
+}
+
+tbody tr:hover {
+  background: #f4f6fa;
+}
+
+.floor-name {
+  font-weight: 600;
+}
+
+/* ===== BADGE ===== */
+.badge {
+  background: #e3e9ff;
+  color: #2f5fa3;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-view {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-delete {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-view:hover,
+.btn-edit:hover,
+.btn-delete:hover {
+  opacity: 0.85;
+}
+
+/* ===== HEADER BUTTONS ===== */
+.btn-primary {
+  background: linear-gradient(135deg, #2f5fa3, #1e3a66);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-back {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}

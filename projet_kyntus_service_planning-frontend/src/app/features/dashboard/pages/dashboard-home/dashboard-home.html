@@ -1,0 +1,297 @@
+<!-- dashboard-home.component.html -->
+<div class="dashboard-layout">
+
+  <!-- ════════ SIDEBAR ════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">K</div>
+      <div class="brand-text">
+        <strong>Kyntus</strong>
+        <span>Morocco RH</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-group-label">Principal</span>
+      <a class="nav-item active" routerLink="/dashboard">
+        <span class="nav-icon">🏠</span> Tableau de bord
+      </a>
+
+      <span class="nav-group-label">Organisation</span>
+      <a class="nav-item" routerLink="/floors">
+        <span class="nav-icon">🏢</span> Étages
+        <span class="nav-chip">7</span>
+      </a>
+      <a class="nav-item" routerLink="/services">
+        <span class="nav-icon">⚙️</span> Services
+        <span class="nav-chip">12</span>
+      </a>
+      <a class="nav-item" routerLink="/sub-services">
+        <span class="nav-icon">📂</span> Sous-services
+        <span class="nav-chip">28</span>
+      </a>
+
+      <span class="nav-group-label">Ressources Humaines</span>
+      <a class="nav-item" routerLink="/users">
+        <span class="nav-icon">👥</span> Employés
+        <span class="nav-chip">230</span>
+      </a>
+      <a class="nav-item" routerLink="/contracts">
+        <span class="nav-icon">📄</span> Contrats
+      </a>
+      <a class="nav-item" routerLink="/conge">
+        <span class="nav-icon">🏖️</span> Congés
+      </a>
+      <a class="nav-item" routerLink="/new-employees">
+        <span class="nav-icon">🆕</span> Nouveaux Employés
+      </a>
+
+      <span class="nav-group-label">Planification</span>
+      <a class="nav-item" routerLink="/planning">
+        <span class="nav-icon">📅</span> Plannings
+      </a>
+      <a class="nav-item" routerLink="/planning/shift-config">
+        <span class="nav-icon">⚙️</span> Config Shifts
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-row">
+        <div class="user-av">AD</div>
+        <div class="user-info">
+          <strong>Administrateur</strong>
+          <span>Amjad&#64;kyntus.ma</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════════ MAIN ════════ -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1>Tableau de bord administrateur</h1>
+        <p>Gestion intégrée des ressources humaines — Kyntus Morocco</p>
+      </div>
+      <div class="topbar-right">
+        <div class="tb-pill">
+          <span class="pulse-dot"></span>
+          Système actif
+        </div>
+        <app-notification-bell></app-notification-bell>
+        <div class="tb-btn">⚙️</div>
+        <div class="tb-avatar">AD</div>
+      </div>
+    </header>
+
+    <!-- PAGE -->
+    <div class="page">
+
+      <!-- ── KPI STRIP ── -->
+      <div class="kpi-grid">
+        <div class="kpi k1" routerLink="/floors">
+          <div class="kpi-ic ik-b">🏢</div>
+          <div class="kpi-body">
+            <div class="kpi-lbl">Étages</div>
+            <div class="kpi-val">7</div>
+            <div class="kpi-sub">Niveaux gérés</div>
+          </div>
+          <span class="kpi-tag t-ok">stable</span>
+        </div>
+
+        <div class="kpi k2" routerLink="/services">
+          <div class="kpi-ic ik-c">⚙️</div>
+          <div class="kpi-body">
+            <div class="kpi-lbl">Services</div>
+            <div class="kpi-val">12</div>
+            <div class="kpi-sub">28 sous-services</div>
+          </div>
+          <span class="kpi-tag t-ok">actif</span>
+        </div>
+
+        <div class="kpi k3" routerLink="/users">
+          <div class="kpi-ic ik-g">👥</div>
+          <div class="kpi-body">
+            <div class="kpi-lbl">Employés</div>
+            <div class="kpi-val">230</div>
+            <div class="kpi-sub">Actifs ce mois</div>
+          </div>
+          <span class="kpi-tag t-up">+3</span>
+        </div>
+
+        <div class="kpi k4" routerLink="/planning">
+          <div class="kpi-ic ik-a">📅</div>
+          <div class="kpi-body">
+            <div class="kpi-lbl">Plannings</div>
+            <div class="kpi-val" style="font-size:18px">Plannings</div>
+            <div class="kpi-sub">Traités · En cours</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ORGANISATION ── -->
+      <div class="db-section">
+        <div class="sec-hd">
+          <div class="sec-left">
+            <span class="sec-dot sd-b"></span>
+            <span class="sec-title">Organisation</span>
+            <span class="sec-count">3 modules</span>
+          </div>
+          <div class="sec-right">
+            <div class="sec-line"></div>
+            <a class="sec-link" routerLink="/floors">Voir tout →</a>
+          </div>
+        </div>
+        <div class="cards-grid">
+          <div class="card cc-blue" routerLink="/floors">
+            <div class="card-top">
+              <div class="card-ic cic-blue">🏢</div>
+              <div class="card-arr">↗</div>
+            </div>
+            <h3>Étages</h3>
+            <p>Gestion et configuration des étages du bâtiment</p>
+            <div class="card-ft">
+              <span class="card-cta">Gérer →</span>
+            </div>
+          </div>
+
+          <div class="card cc-indigo" routerLink="/services">
+            <div class="card-top">
+              <div class="card-ic cic-indigo">⚙️</div>
+              <div class="card-arr">↗</div>
+            </div>
+            <h3>Services</h3>
+            <p>Administration des services et départements</p>
+            <div class="card-ft">
+              <span class="card-cta">Gérer →</span>
+            </div>
+          </div>
+
+          <div class="card cc-yellow" routerLink="/sub-services">
+            <div class="card-top">
+              <div class="card-ic cic-yellow">📂</div>
+              <div class="card-arr">↗</div>
+            </div>
+            <h3>Sous-services</h3>
+            <p>Gestion des sous-divisions de services</p>
+            <div class="card-ft">
+              <span class="card-cta">Gérer →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RESSOURCES HUMAINES ── -->
+      <div class="db-section">
+        <div class="sec-hd">
+          <div class="sec-left">
+            <span class="sec-dot sd-g"></span>
+            <span class="sec-title">Ressources Humaines</span>
+            <span class="sec-count">4 modules</span>
+          </div>
+          <div class="sec-right">
+            <div class="sec-line"></div>
+            <a class="sec-link" routerLink="/users">Voir tout →</a>
+          </div>
+        </div>
+        <div class="cards-grid">
+          <div class="card cc-green" routerLink="/users">
+            <div class="card-top">
+              <div class="card-ic cic-green">👥</div>
+              <div class="card-arr">↗</div>
+            </div>
+            <h3>Employés</h3>
+            <p>Gestion des dossiers et profils des employés</p>
+            <div class="card-ft">
+              <span class="card-cta">Gérer →</span>
+            </div>
+          </div>
+
+          <div class="card cc-indigo" routerLink="/contracts">
+            <div class="card-top">
+              <div class="card-ic cic-indigo">📄</div>
+              <div class="card-arr">↗</div>
+            </div>
+            <h3>Contrats</h3>
+            <p>Gestion des contrats CDI, CDD, Stage et Intérim</p>
+            <div class="card-ft">
+              <span class="badge"><span class="bdot bd-i"></span>Gérer les contrats</span>
+              <span class="card-cta">Ouvrir →</span>
+            </div>
+          </div>
+
+          <div class="card cc-teal" routerLink="/conge">
+            <div class="card-top">
+              <div class="card-ic cic-teal">🏖️</div>
+              <div class="card-arr">↗</div>
+            </div>
+            <h3>Congés</h3>
+            <p>Gestion et suivi des congés des employés</p>
+            <div class="card-ft">
+              <span class="badge"><span class="bdot bd-t"></span>Gérer les congés</span>
+              <span class="card-cta">Ouvrir →</span>
+            </div>
+          </div>
+
+          <div class="card cc-yellow" routerLink="/new-employees">
+            <div class="card-top">
+              <div class="card-ic cic-yellow">🆕</div>
+              <div class="card-arr">↗</div>
+            </div>
+            <h3>Nouveaux Employés</h3>
+            <p>Configuration des slots samedi pour les nouveaux employés</p>
+            <div class="card-ft">
+              <span class="badge"><span class="bdot bd-y"></span>Slots samedi</span>
+              <span class="card-cta">Configurer →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PLANIFICATION ── -->
+      <div class="db-section">
+        <div class="sec-hd">
+          <div class="sec-left">
+            <span class="sec-dot sd-a"></span>
+            <span class="sec-title">Planification</span>
+            <span class="sec-count">2 modules</span>
+          </div>
+          <div class="sec-right">
+            <div class="sec-line"></div>
+            <a class="sec-link" routerLink="/planning">Voir tout →</a>
+          </div>
+        </div>
+        <div class="cards-grid">
+          <div class="card cc-rose" routerLink="/planning">
+            <div class="card-top">
+              <div class="card-ic cic-rose">📅</div>
+              <div class="card-arr">↗</div>
+            </div>
+            <h3>Plannings</h3>
+            <p>Organisation et gestion des plannings d'équipe</p>
+            <div class="card-ft">
+              <span class="badge"><span class="bdot bd-r"></span>En cours</span>
+              <span class="card-cta">Gérer →</span>
+            </div>
+          </div>
+
+          <div class="card cc-indigo" routerLink="/planning/shift-config">
+            <div class="card-top">
+              <div class="card-ic cic-indigo">⚙️</div>
+              <div class="card-arr">↗</div>
+            </div>
+            <h3>Configuration Shifts</h3>
+            <p>Définir les shifts, horaires et pauses par sous-service</p>
+            <div class="card-ft">
+              <span class="badge"><span class="bdot bd-i"></span>Par semaine</span>
+              <span class="card-cta">Configurer →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page -->
+  </div><!-- /main -->
+</div><!-- /dashboard-layout -->

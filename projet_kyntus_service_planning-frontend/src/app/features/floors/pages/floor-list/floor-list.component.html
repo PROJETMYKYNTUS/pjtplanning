@@ -1,0 +1,87 @@
+<div class="page">
+
+  <!-- ===== HEADER SECTION ===== -->
+  <div class="page-header">
+    <div class="left">
+      <button class="btn-back" (click)="goToDashboard()">
+        ← Retour Dashboard
+      </button>
+      <div>
+        <h1>Gestion des Étages</h1>
+        <p>Administration et gestion des étages</p>
+      </div>
+    </div>
+
+    <button class="btn-primary" (click)="createFloor()">
+      + Nouvel Étage
+    </button>
+  </div>
+
+  <!-- ===== CONTENT CARD ===== -->
+  <div class="card-container">
+
+    @if (loading) {
+      <div class="state loading">
+        <div class="spinner"></div>
+        <p>Chargement en cours...</p>
+      </div>
+    } 
+    @else if (error) {
+      <div class="state error">
+        <p>{{ error }}</p>
+        <button class="btn-retry" (click)="loadFloors()">🔄 Réessayer</button>
+      </div>
+    } 
+    @else if (floors.length === 0) {
+      <div class="state empty">
+        <p>Aucun étage trouvé</p>
+        <button class="btn-primary" (click)="createFloor()">Créer un étage</button>
+      </div>
+    } 
+    @else {
+
+      <!-- TABLE -->
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nom</th>
+              <th>Description</th>
+              <th>Services</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (floor of floors; track floor.id; let i = $index) {
+              <tr>
+                <td>{{ i + 1 }}</td>
+                <td class="floor-name">{{ floor.name }}</td>
+                <td>{{ floor.description || '—' }}</td>
+                <td>
+                  <span class="badge">
+                    {{ floor.servicesCount }}
+                  </span>
+                </td>
+                <td class="actions">
+                  <button class="btn-view" (click)="viewFloor(floor.id)">
+                    Voir
+                  </button>
+                  <button class="btn-edit" (click)="editFloor(floor.id)">
+                    Modifier
+                  </button>
+                  <button class="btn-delete" (click)="deleteFloor(floor.id)">
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+    }
+
+  </div>
+</div>

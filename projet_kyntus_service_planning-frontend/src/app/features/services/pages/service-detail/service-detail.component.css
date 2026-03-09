@@ -1,0 +1,116 @@
+/* ===== PAGE ===== */
+.service-detail-page {
+  padding: 40px;
+  min-height: 100vh;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  max-width: 800px;
+}
+
+/* ===== INFO ===== */
+.service-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.label {
+  font-weight: 600;
+  color: #555;
+}
+
+.value {
+  font-size: 14px;
+}
+
+/* ===== SUBSERVICES ===== */
+.subservices-section {
+  margin-top: 20px;
+}
+
+.subservices-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.empty-state {
+  padding: 20px;
+  text-align: center;
+  color: #777;
+}
+
+/* ===== ACTIONS ===== */
+.actions {
+  margin-top: 25px;
+  display: flex;
+  gap: 12px;
+}
+/* ===== BUTTONS ===== */
+.btn {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2f5fa3, #1e3a66);
+  color: white;
+}
+
+.btn-light {
+  background: #e5e7eb;
+}
+
+.btn-danger,
+.btn-delete {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-edit {
+  background: #f59e0b;
+  color: white;
+}
+
+.btn-view {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* ===== BADGE ===== */
+.badge {
+  background: #e3e9ff;
+  color: #2f5fa3;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge.secondary {
+  background: #f3f4f6;
+  color: #555;
+}

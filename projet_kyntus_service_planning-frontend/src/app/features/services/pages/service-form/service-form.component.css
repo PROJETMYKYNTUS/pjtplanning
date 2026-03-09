@@ -1,0 +1,117 @@
+/* ===== PAGE ===== */
+.service-form-page {
+  padding: 40px;
+  min-height: 100vh;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  max-width: 700px;
+}
+
+/* ===== FORM ===== */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+label span {
+  color: #ef4444;
+}
+
+input,
+select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: #2f5fa3;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(47,95,163,0.15);
+}
+
+.input-error {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+/* ===== BUTTONS ===== */
+.btn {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2f5fa3, #1e3a66);
+  color: white;
+}
+
+.btn-light {
+  background: #e5e7eb;
+}
+
+.btn-danger,
+.btn-delete {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-edit {
+  background: #f59e0b;
+  color: white;
+}
+
+.btn-view {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* ===== BADGE ===== */
+.badge {
+  background: #e3e9ff;
+  color: #2f5fa3;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge.secondary {
+  background: #f3f4f6;
+  color: #555;
+}

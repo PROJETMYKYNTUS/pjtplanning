@@ -1,0 +1,122 @@
+/* ===== WRAPPER ===== */
+.page-wrapper {
+  padding: 40px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ===== CARD ===== */
+.form-card {
+  width: 100%;
+  max-width: 700px;
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* ===== HEADER ===== */
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.form-header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.form-header p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* ===== STATES ===== */
+.state {
+  text-align: center;
+  padding: 30px;
+}
+
+.state.error {
+  color: red;
+}
+
+/* ===== FORM ===== */
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+input,
+textarea {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #2f5fa3;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(47,95,163,0.15);
+}
+
+/* ===== ERRORS ===== */
+.field-error {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* ===== ACTIONS ===== */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+  background: linear-gradient(135deg, #2f5fa3, #1e3a66);
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-back {
+  background: #f3f4f6;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}

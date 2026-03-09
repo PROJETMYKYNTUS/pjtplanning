@@ -1,0 +1,69 @@
+<!-- features/contract/components/notification-bell/notification-bell.component.html -->
+<!-- ✅ LOGIQUE LIVE : notifications actives tant que l'alerte est active -->
+
+<div class="bell-wrapper">
+
+  <!-- ── Bouton cloche ── -->
+  <button class="bell-btn" (click)="togglePanel()">
+    <span class="bell-icon">🔔</span>
+    <span class="bell-count" *ngIf="unreadCount > 0">
+      {{ unreadCount > 99 ? '99+' : unreadCount }}
+    </span>
+  </button>
+
+  <!-- ── Panel dropdown ── -->
+  <div class="notif-panel" *ngIf="isOpen">
+
+    <!-- Header -->
+    <div class="panel-header">
+      <div class="panel-title-row">
+        <span class="panel-title">🔔 Alertes contrats</span>
+        <span class="panel-count" *ngIf="unreadCount > 0">{{ unreadCount }} active(s)</span>
+      </div>
+      <button class="btn-see-all" (click)="goToNotificationList()">
+        Voir tout →
+      </button>
+    </div>
+
+    <!-- Loading -->
+    <div class="panel-loading" *ngIf="loading">
+      <div class="mini-spinner"></div>
+      <span>Chargement...</span>
+    </div>
+
+    <!-- Liste notifications -->
+    <div class="notif-list" *ngIf="!loading && notifications.length > 0">
+      <div
+        class="notif-item"
+        *ngFor="let n of notifications"
+        (click)="onNotifClick(n)">
+
+        <div class="notif-icon-wrap" [ngClass]="getIconClass(n.type)">
+          {{ getIcon(n.type) }}
+        </div>
+
+        <div class="notif-content">
+          <p class="notif-message">{{ n.message }}</p>
+          <div class="notif-meta">
+            <span class="notif-user">{{ n.userFullName }}</span>
+            <span class="notif-time">{{ n.createdAt | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+        <span class="arrow-icon">›</span>
+      </div>
+    </div>
+
+    <!-- Vide = aucune alerte active -->
+    <div class="panel-empty" *ngIf="!loading && notifications.length === 0">
+      <span>✅</span>
+      <p>Aucune alerte active</p>
+      <small>Toutes les échéances sont loin</small>
+    </div>
+
+  </div>
+
+  <!-- Overlay fermeture -->
+  <div class="bell-overlay" *ngIf="isOpen" (click)="closePanel()"></div>
+
+</div>
