@@ -8,7 +8,7 @@ import { SubServiceDetail } from '../../sub-services-module';
   selector: 'app-sub-service-detail',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './sub-service-detail.component.html',
+  templateUrl: './sub-service-detail.Component.html',
   styleUrls: ['./sub-service-detail.component.css']
 })
 export class SubServiceDetailComponent implements OnInit {

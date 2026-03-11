@@ -180,6 +180,7 @@ public class EmployeePlanningDto
     public int UserId { get; set; }
     public string FullName { get; set; } = string.Empty;
     public bool IsNewEmployee { get; set; }
+    public int Level { get; set; }
     public List<DayAssignmentDto> Days { get; set; } = new();
     public string? ManagerComment { get; set; }  // ✅ AJOUTER
 }

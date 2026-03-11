@@ -12,6 +12,8 @@
     public DateTime HireDate { get; set; }
     public bool IsActive { get; set; }
     public DateTime CreatedAt { get; set; }
+    public int Level { get; set; }
+  
 }
 
 public class SubServiceSimpleDto
@@ -30,6 +32,7 @@ public class CreateUserDto
     public string LastName { get; set; } = string.Empty;
     public DateTime HireDate { get; set; }
     public string Email { get; set; } = string.Empty;
+    public int Level { get; set; } = 1;
 }
 
 public class UpdateUserDto
@@ -42,4 +45,5 @@ public class UpdateUserDto
     public DateTime HireDate { get; set; }
     public string Email { get; set; } = string.Empty;
     public bool IsActive { get; set; }
+    public int Level { get; set; } = 1;
 }

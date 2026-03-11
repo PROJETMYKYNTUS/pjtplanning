@@ -52,6 +52,35 @@
           </div>
         </div>
 
+<div class="form-row">
+  <div class="form-group">
+    <label>Niveau <span class="required">*</span></label>
+    <div class="level-selector">
+      <button type="button"
+              class="level-btn"
+              [class.active]="form.level === 1"
+              (click)="form.level = 1">
+        <span class="level-num">1</span>
+        <span class="level-lbl">Débutant</span>
+      </button>
+      <button type="button"
+              class="level-btn"
+              [class.active]="form.level === 2"
+              (click)="form.level = 2">
+        <span class="level-num">2</span>
+        <span class="level-lbl">Intermédiaire</span>
+      </button>
+      <button type="button"
+              class="level-btn"
+              [class.active]="form.level === 3"
+              (click)="form.level = 3">
+        <span class="level-num">3</span>
+        <span class="level-lbl">Expert</span>
+      </button>
+    </div>
+  </div>
+</div>
+
         <div class="form-row">
           <div class="form-group">
             <label>Rôle <span class="required">*</span></label>

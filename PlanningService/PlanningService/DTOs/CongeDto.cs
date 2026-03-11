@@ -4,7 +4,7 @@
     int UserId,
     DateOnly StartDate,
     DateOnly EndDate,
-    string Reason
+    string? Reason
 );
 
     public record SetSaturdaySlotDto(

@@ -80,25 +80,29 @@
   <div class="emp-info">
     <div class="emp-avatar">{{ emp.fullName[0] }}</div>
     <div class="emp-details">
-      <span class="emp-name">{{ emp.fullName }}</span>
-      <span class="emp-tag" *ngIf="emp.isNewEmployee">🆕</span>
+      <div class="emp-name-row">
+        <span class="emp-name">{{ emp.fullName }}</span>
+        <!-- ✅ Badge niveau -->
+        <span class="level-badge level-{{ emp.level }}">N{{ emp.level }}</span>
+        <span class="emp-tag" *ngIf="emp.isNewEmployee">🆕</span>
+      </div>
     </div>
   </div>
 
-  <!-- ✅ Bouton commentaire (seulement en Draft) -->
-  <div class="emp-comment-row" *ngIf="planning.status === 'Draft'">
+  <!-- Bouton commentaire Draft -->
+  <div class="emp-comment-row" *ngIf="planning!.status === 'Draft'">
     <button class="btn-comment"
             (click)="openCommentModal(emp, $event)"
-            [title]="emp.managerComment ? 'Modifier le commentaire' : 'Ajouter un commentaire'">
+            [title]="emp.managerComment ? 'Modifier' : 'Ajouter note'">
       {{ emp.managerComment ? '💬' : '➕' }}
     </button>
     <button class="btn-delete-comment"
             *ngIf="emp.managerComment"
             (click)="deleteComment(emp, $event)"
-            title="Supprimer le commentaire">🗑️</button>
+            title="Supprimer">🗑️</button>
   </div>
 
-  <!-- ✅ Afficher le commentaire existant -->
+  <!-- Commentaire affiché -->
   <div class="emp-comment-display" *ngIf="emp.managerComment">
     <span class="comment-icon">💬</span>
     <span class="comment-text">{{ emp.managerComment }}</span>

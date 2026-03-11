@@ -66,6 +66,7 @@ public class UserService : IUserService
             LastName = dto.LastName,
             Email = dto.Email,
             HireDate = dto.HireDate,
+            Level = dto.Level,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword("Azerty@123"),
             IsActive = true,
             CreatedAt = DateTime.UtcNow
@@ -103,6 +104,7 @@ public class UserService : IUserService
         user.Email = dto.Email;
         user.HireDate = dto.HireDate;
         user.IsActive = dto.IsActive;
+        user.Level = dto.Level;
 
         // Mettre à jour les sous-services gérés
         var existing = _context.UserSubServices.Where(us => us.UserId == id);
@@ -162,6 +164,7 @@ public class UserService : IUserService
         Email = u.Email,
         HireDate = u.HireDate,
         IsActive = u.IsActive,
-        CreatedAt = u.CreatedAt
+        CreatedAt = u.CreatedAt,
+        Level = u.Level
     };
 }

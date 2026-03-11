@@ -1,12 +1,8 @@
-// Program.cs — VERSION CORRIGÉE
 using Microsoft.EntityFrameworkCore;
 using PlanningService.Data;
 using PlanningService.Interfaces;
 using PlanningService.Services;
 using System.Text.Json.Serialization;
-
-// ? Alias pour éviter le conflit entre namespace PlanningService
-// et la classe PlanningService.Services.PlanningService
 using PlanningServiceImpl = PlanningService.Services.PlanningService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,9 +12,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy
+            .WithOrigins(
+                "http://localhost:4200",
+                "http://localhost:80",
+                "http://localhost"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader();
     });
 });
 
@@ -27,14 +28,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // ?? Services ??
-// ? FIX — utiliser directement le nom de classe sans chemin complet
-// car tous les services sont dans PlanningService.Services (déjà importé)
 builder.Services.AddScoped<IFloorService, FloorService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<ISubServiceService, SubServiceService>();
-builder.Services.AddScoped<IUserService, UserService>();      // ? corrigé
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IContractService, ContractService>();
-builder.Services.AddScoped<IPlanningService, PlanningServiceImpl>(); // ? alias
+builder.Services.AddScoped<IPlanningService, PlanningServiceImpl>();
 
 // ?? Controllers ??
 builder.Services.AddControllers()
@@ -50,15 +49,32 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
 
+// ????????????????????????????????????????????????????
+// ? ÉTAPE 1 — Migrations en PREMIER (avant tout le reste)
+// ????????????????????????????????????????????????????
 using (var scope = app.Services.CreateScope())
 {
-    var planningService = scope.ServiceProvider
-        .GetRequiredService<IPlanningService>();
-
-    await planningService.SyncNewEmployeesAsync(); // ? sync au démarrage
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var maxRetries = 10;
+    for (int i = 0; i < maxRetries; i++)
+    {
+        try
+        {
+            db.Database.Migrate();
+            Console.WriteLine("? Migrations appliquées avec succès.");
+            break;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"? Attente DB... tentative {i + 1}/{maxRetries}: {ex.Message}");
+            Thread.Sleep(3000);
+        }
+    }
 }
 
-// ?? Seed Shifts ??
+// ????????????????????????????????????????????????????
+// ? ÉTAPE 2 — Seed Shifts (après migrations)
+// ????????????????????????????????????????????????????
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -74,6 +90,16 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+// ????????????????????????????????????????????????????
+// ? ÉTAPE 3 — Sync employés (après migrations + seed)
+// ????????????????????????????????????????????????????
+using (var scope = app.Services.CreateScope())
+{
+    var planningService = scope.ServiceProvider.GetRequiredService<IPlanningService>();
+    await planningService.SyncNewEmployeesAsync();
+}
+
+// ?? Middleware ??
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -84,4 +110,5 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAngular");
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();

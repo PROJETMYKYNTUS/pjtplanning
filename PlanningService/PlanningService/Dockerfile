@@ -1,30 +1,19 @@
-# Consultez https://aka.ms/customizecontainer pour savoir comment personnaliser votre conteneur de débogage et comment Visual Studio utilise ce Dockerfile pour générer vos images afin d’accélérer le débogage.
-
-# Cet index est utilisé lors de l’exécution à partir de VS en mode rapide (par défaut pour la configuration de débogage)
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
-USER $APP_UID
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
+
+# ✅ Nom exact du .csproj
+COPY PlanningService.csproj ./
+RUN dotnet restore PlanningService.csproj
+
+COPY . ./
+RUN dotnet publish PlanningService.csproj -c Release -o /out
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+
+COPY --from=build /out .
+
 EXPOSE 8080
-EXPOSE 8081
 
-
-# Cette phase est utilisée pour générer le projet de service
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["PlanningService/PlanningService.csproj", "PlanningService/"]
-RUN dotnet restore "./PlanningService/PlanningService.csproj"
-COPY . .
-WORKDIR "/src/PlanningService"
-RUN dotnet build "./PlanningService.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
-# Cette étape permet de publier le projet de service à copier dans la phase finale
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./PlanningService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-# Cette phase est utilisée en production ou lors de l’exécution à partir de VS en mode normal (par défaut quand la configuration de débogage n’est pas utilisée)
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+# ✅ Nom exact de la DLL générée
 ENTRYPOINT ["dotnet", "PlanningService.dll"]

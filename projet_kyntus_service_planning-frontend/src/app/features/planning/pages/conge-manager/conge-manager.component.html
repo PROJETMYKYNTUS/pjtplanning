@@ -57,11 +57,10 @@
     <div class="alert-error" *ngIf="error">⚠️ {{ error }}</div>
     <div class="form-group">
       <label>Employé <span class="req">*</span></label>
-      <select [(ngModel)]="formUserId">
-        <option [value]="0" disabled>-- Sélectionner --</option>
-       <!-- ✅ APRÈS -->
-<option *ngFor="let e of employees" [value]="e.userId">{{ e.fullName }}</option>
-      </select>
+<select [(ngModel)]="formUserId">
+  <option [ngValue]="0" disabled>-- Sélectionner --</option>
+  <option *ngFor="let e of employees" [ngValue]="e.id">{{ e.fullName }}</option>
+</select>
     </div>
     <div class="form-row">
       <div class="form-group">

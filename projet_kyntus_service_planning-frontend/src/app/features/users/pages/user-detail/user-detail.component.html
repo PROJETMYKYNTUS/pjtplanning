@@ -78,6 +78,13 @@
             {{ user.createdAt | date:'dd/MM/yyyy' }}
           </span>
         </div>
+        <div class="info-item">
+  <span class="info-label">Niveau</span>
+  <span class="level-badge lv-{{ user.level }}">
+    Niveau {{ user.level }}
+    {{ user.level === 1 ? '— Débutant' : user.level === 2 ? '— Intermédiaire' : '— Expert' }}
+  </span>
+</div>
 
       </div>
 

@@ -820,7 +820,7 @@ public class PlanningService : IPlanningService
                     UserId = g.Key,
                     FullName = $"{g.First().User.FirstName} {g.First().User.LastName}",
                     IsNewEmployee = g.First().IsNewEmployee,
-                    // ✅ Injecter le commentaire du responsable
+                    Level = g.First().User.Level,
                     ManagerComment = comments
                         .FirstOrDefault(c => c.UserId == g.Key)?.Comment,
                     Days = g.OrderBy(a => a.AssignedDate)

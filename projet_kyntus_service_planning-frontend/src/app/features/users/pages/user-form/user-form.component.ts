@@ -43,7 +43,8 @@ export class UserFormComponent implements OnInit {
     lastName: '',
     email: '',
     hireDate: this.toDateInputValue(new Date()),  // ✅ format yyyy-MM-dd
-    isActive: true
+    isActive: true ,
+     level:                1
   };
 
   constructor(
@@ -103,7 +104,8 @@ export class UserFormComponent implements OnInit {
           hireDate: user.hireDate
             ? this.toDateInputValue(new Date(user.hireDate))
             : this.toDateInputValue(new Date()),
-          isActive: user.isActive
+          isActive: user.isActive,
+           level:                user.level ?? 1 
         };
         this.loading = false;
         this.cdr.detectChanges();
@@ -162,7 +164,8 @@ export class UserFormComponent implements OnInit {
         lastName: this.form.lastName,
         email: this.form.email,
         hireDate: hireDateISO,   // ✅ ISO complet
-        isActive: this.form.isActive
+        isActive: this.form.isActive,
+          level:                this.form.level 
       };
       this.userService.updateUser(this.userId, dto).subscribe({
         next: () => this.router.navigate(['/users', this.userId]),
@@ -181,7 +184,8 @@ export class UserFormComponent implements OnInit {
         firstName: this.form.firstName,
         lastName: this.form.lastName,
         email: this.form.email,
-        hireDate: hireDateISO    // ✅ ISO complet
+        hireDate: hireDateISO  ,  
+          level:                this.form.level// ✅ ISO complet
       };
       this.userService.createUser(dto).subscribe({
         next: (user) => this.router.navigate(['/users', user.id]),

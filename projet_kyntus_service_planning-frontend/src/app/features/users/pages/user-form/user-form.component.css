@@ -90,3 +90,48 @@ input:focus, select:focus {
   justify-content: flex-end;
   gap: 15px;
 }
+.level-selector {
+  display: flex; gap: 12px;
+}
+
+.level-btn {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 4px; padding: 12px 20px;
+  background: rgba(255,255,255,0.04);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 10px; cursor: pointer;
+  transition: all 0.2s; min-width: 90px;
+}
+
+.level-btn:hover {
+  border-color: rgba(99,102,241,0.4);
+  background: rgba(99,102,241,0.08);
+}
+
+/* Niveau 1 — vert */
+.level-btn:nth-child(1).active {
+  border-color: #10b981;
+  background: rgba(16,185,129,0.15);
+}
+.level-btn:nth-child(1).active .level-num { color: #34d399; }
+
+/* Niveau 2 — orange */
+.level-btn:nth-child(2).active {
+  border-color: #f59e0b;
+  background: rgba(245,158,11,0.15);
+}
+.level-btn:nth-child(2).active .level-num { color: #fbbf24; }
+
+/* Niveau 3 — rouge */
+.level-btn:nth-child(3).active {
+  border-color: #ef4444;
+  background: rgba(239,68,68,0.15);
+}
+.level-btn:nth-child(3).active .level-num { color: #f87171; }
+
+.level-num {
+  font-size: 22px; font-weight: 700; color: #94a3b8;
+}
+.level-lbl {
+  font-size: 11px; color: #64748b;
+}

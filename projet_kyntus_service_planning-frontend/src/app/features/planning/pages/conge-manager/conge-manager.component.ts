@@ -86,33 +86,40 @@ export class CongeManagerComponent implements OnInit {
   closeForm(): void { this.showForm = false; }
 
   saveConge(): void {
-    if (!this.formUserId || !this.formStartDate || !this.formEndDate) {
-      this.error = "Veuillez remplir tous les champs obligatoires."; return;
-    }
-    if (this.formStartDate > this.formEndDate) {
-      this.error = "La date de fin doit être après la date de début."; return;
-    }
-    this.saving = true; this.error = "";
-    this.congeService.create({
-      userId: this.formUserId,
-      startDate: this.formStartDate,
-      endDate: this.formEndDate,
-      reason: this.formReason
-    }).subscribe({
-      next: () => {
-        this.saving = false; this.showForm = false;
-        this.successMsg = "Congé enregistré avec succès !";
-        this.loadConges();
-        setTimeout(() => { this.successMsg = ""; this.cdr.detectChanges(); }, 3000);
-        this.cdr.detectChanges();
-      },
-      error: (err: any) => {
-        this.saving = false;
-        this.error = err.error?.message ?? "Erreur lors de la création.";
-        this.cdr.detectChanges();
-      }
-    });
+
+
+     console.log('formUserId:', this.formUserId, typeof this.formUserId);
+  console.log('employees:', this.employees);
+  // ✅ Forcer la conversion en number
+  const userId = Number(this.formUserId);
+  
+  if (!userId || !this.formStartDate || !this.formEndDate) {
+    this.error = "Veuillez remplir tous les champs obligatoires."; return;
   }
+  if (this.formStartDate > this.formEndDate) {
+    this.error = "La date de fin doit être après la date de début."; return;
+  }
+  this.saving = true; this.error = "";
+  this.congeService.create({
+    userId: userId,  // ✅ number garanti
+    startDate: this.formStartDate,
+    endDate: this.formEndDate,
+    reason: this.formReason
+  }).subscribe({
+    next: () => {
+      this.saving = false; this.showForm = false;
+      this.successMsg = "Congé enregistré avec succès !";
+      this.loadConges();
+      setTimeout(() => { this.successMsg = ""; this.cdr.detectChanges(); }, 3000);
+      this.cdr.detectChanges();
+    },
+    error: (err: any) => {
+      this.saving = false;
+      this.error = err.error?.message ?? "Erreur lors de la création.";
+      this.cdr.detectChanges();
+    }
+  });
+}
 
   deleteConge(id: number): void {
     if (!confirm("Supprimer ce congé ?")) return;

@@ -66,14 +66,18 @@
             @for (user of filteredUsers; track user.id) {
               <tr>
                 <td>
-                  <div class="user-cell">
-                    <div class="user-avatar">{{ user.lastName[0] }}{{ user.firstName[0] }}</div>
-                    <div class="user-info">
-                      <span class="name">{{ user.lastName }} {{ user.firstName }}</span>
-                      <span class="email">{{ user.email }}</span>
-                    </div>
-                  </div>
-                </td>
+  <div class="user-cell">
+    <div class="user-avatar">{{ user.lastName[0] }}{{ user.firstName[0] }}</div>
+    <div class="user-info">
+      <div class="user-name-row">
+        <span class="name">{{ user.lastName }} {{ user.firstName }}</span>
+        <!-- ✅ Badge niveau -->
+        <span class="level-badge lv-{{ user.level }}">N{{ user.level }}</span>
+      </div>
+      <span class="email">{{ user.email }}</span>
+    </div>
+  </div>
+</td>
                 <td><span class="badge badge-role">{{ user.roleName }}</span></td>
                 <td>{{ user.subServiceName || '—' }}</td>
                 <td>

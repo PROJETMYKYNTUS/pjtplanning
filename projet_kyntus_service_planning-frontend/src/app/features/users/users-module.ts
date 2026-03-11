@@ -17,6 +17,7 @@ export interface User {
   hireDate: string;
   isActive: boolean;
   createdAt: string;
+ level:                 number;
 }
 
 export interface CreateUserDto {
@@ -28,6 +29,7 @@ export interface CreateUserDto {
   lastName: string;
   
   email: string;
+    level:                 number;
 }
 
 export interface UpdateUserDto {
@@ -39,4 +41,5 @@ export interface UpdateUserDto {
    hireDate: string;
   email: string;
   isActive: boolean;
+    level:                 number;
 }

@@ -11,8 +11,8 @@ type FilterType = 'all' | 'unread' | 'warn' | 'mid';
   selector: 'app-notification-list',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './notification-list.component.html',
-  styleUrls: ['./notification-list.component.css'],
+  templateUrl: './Notification-list.component.html',
+  styleUrls: ['./Notification-list.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class NotificationListComponent implements OnInit {

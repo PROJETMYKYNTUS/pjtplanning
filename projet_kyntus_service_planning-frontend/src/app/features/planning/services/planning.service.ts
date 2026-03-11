@@ -39,6 +39,7 @@ export interface EmployeePlanning {
   isNewEmployee: boolean;
   days:          DayAssignment[];
   managerComment?: string;   // 
+  level:           number;  
 }
 
 export interface WeeklyPlanningResponse {
@@ -82,7 +83,7 @@ export interface ShiftSimple {
 }
 
 export interface EmployeeItem {
-  userId:        number;
+   id:            number;  
   fullName:      string;
   isNewEmployee: boolean;
   isActive:      boolean;

@@ -93,7 +93,7 @@ public class CongesController : ControllerBase
             UserId = dto.UserId,
             StartDate = dto.StartDate,
             EndDate = dto.EndDate,
-            Reason = dto.Reason,
+            Reason = dto.Reason ?? "",
             Status = CongeStatus.Approved, // Approuve directement par le manager
             CreatedAt = DateTime.UtcNow
         };
