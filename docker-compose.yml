@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
 
+  # ─── DATABASES ────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
     container_name: kyntus_db
@@ -19,34 +20,114 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - microservices-network
 
-  backend:
+  postgres-auth:
+    image: postgres:16-alpine
+    container_name: kyntus_auth_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: Auth@2026
+    volumes:
+      - postgres_auth_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auth_user -d auth_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - microservices-network
+
+  # ─── BACKENDS ─────────────────────────────────────────
+  auth-backend:
+    build:
+      context: ./AuthService/AuthService
+      dockerfile: Dockerfile
+    container_name: kyntus_auth_backend
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: "Host=postgres-auth;Port=5432;Database=auth_db;Username=auth_user;Password=Auth@2026"
+    ports:
+      - "5220:8080"
+    depends_on:
+      postgres-auth:
+        condition: service_healthy
+    networks:
+      - microservices-network
+
+  planning-backend:
     build:
       context: ./PlanningService/PlanningService
       dockerfile: Dockerfile
-    container_name: kyntus_backend
+    container_name: kyntus_planning_backend
     restart: unless-stopped
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://+:8080
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=kyntus_db;Username=kyntus_user;Password=Kyntus@2026"
     ports:
-      - "8090:8080"
+      - "5201:8080"
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - microservices-network
 
-  frontend:
+  # ─── API GATEWAY ──────────────────────────────────────
+  api-gateway:
+    build:
+      context: ./ApiGateway.API/ApiGateway.API
+      dockerfile: Dockerfile
+    container_name: kyntus_gateway
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+    ports:
+      - "5000:8080"
+    depends_on:
+      - auth-backend
+      - planning-backend
+    networks:
+      - microservices-network
+
+  # ─── FRONTENDS ────────────────────────────────────────
+  auth-frontend:
+    build:
+      context: ./auth-frontend
+      dockerfile: DockerFile
+    container_name: kyntus_auth_frontend
+    restart: unless-stopped
+    ports:
+      - "4201:4000"
+    environment:
+      - API_URL=http://api-gateway:8080
+    depends_on:
+      - api-gateway
+    networks:
+      - microservices-network
+
+  planning-frontend:
     build:
       context: ./projet_kyntus_service_planning-frontend
       dockerfile: Dockerfile
-    container_name: kyntus_frontend
+    container_name: kyntus_planning_frontend
     restart: unless-stopped
     ports:
       - "4200:80"
     depends_on:
-      - backend
+      - api-gateway
+    networks:
+      - microservices-network
 
+  # ─── PGADMIN ──────────────────────────────────────────
   pgadmin:
     image: dpage/pgadmin4
     container_name: kyntus_pgadmin
@@ -55,9 +136,14 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@kyntus.ma
       PGADMIN_DEFAULT_PASSWORD: admin123
     ports:
-      - "5051:80"
-    depends_on:
-      - postgres
+      - "5050:80"
+    networks:
+      - microservices-network
 
 volumes:
   postgres_data:
+  postgres_auth_data:
+
+networks:
+  microservices-network:
+    driver: bridge

@@ -1,0 +1,139 @@
+<div class="login-container">
+  <!-- Panneau gauche - Branding -->
+  <div class="branding-panel">
+    <div class="branding-content">
+ <div class="company-logo">
+ <img src="images/kyntusmorocco01_logo.jpg" alt="KYNTUS MOROCCO" class="logo-image"/>
+<h2>Bienvenue sur votre plateforme de gestion</h2>
+        <p>Gérez efficacement vos plannings, contrats et ressources humaines</p>
+</div>
+      
+      <div class="features">
+        <div class="feature-item">
+          <span class="feature-icon">📊</span>
+          <span>Planification intelligente</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">👥</span>
+          <span>Gestion d'équipe</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">📈</span>
+          <span>Suivi des performances</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panneau droit - Formulaire -->
+  <div class="form-panel">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>Connexion</h1>
+        <p>Accédez à votre espace personnel</p>
+      </div>
+
+      <!-- Message d'erreur -->
+      <div *ngIf="errorMessage" class="alert alert-error">
+        <span class="alert-icon">⚠️</span>
+        {{ errorMessage }}
+      </div>
+
+      <!-- Formulaire de connexion -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">
+            <span class="label-icon">✉️</span>
+            Adresse email
+          </label>
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email"
+            placeholder="votre.email@kyntus.ma"
+            [class.error]="hasError('email', 'required') || hasError('email', 'email')"
+          />
+          <div class="error-message" *ngIf="hasError('email', 'required')">
+            L'email est requis
+          </div>
+          <div class="error-message" *ngIf="hasError('email', 'email')">
+            Format d'email invalide
+          </div>
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="form-group">
+          <label for="password">
+            <span class="label-icon">🔒</span>
+            Mot de passe
+          </label>
+          <div class="password-input-wrapper">
+            <input 
+              [type]="showPassword ? 'text' : 'password'" 
+              id="password" 
+              formControlName="password"
+              placeholder="••••••••"
+              [class.error]="hasError('password', 'required') || hasError('password', 'minlength')"
+            />
+            <button 
+              type="button" 
+              class="toggle-password"
+              (click)="togglePasswordVisibility()"
+              tabindex="-1"
+              [attr.aria-label]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+            >
+              {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+            </button>
+          </div>
+          <div class="error-message" *ngIf="hasError('password', 'required')">
+            Le mot de passe est requis
+          </div>
+          <div class="error-message" *ngIf="hasError('password', 'minlength')">
+            Le mot de passe doit contenir au moins 6 caractères
+          </div>
+        </div>
+
+        <!-- Options supplémentaires -->
+        <div class="form-options">
+          <label class="checkbox-container">
+            <input type="checkbox" />
+            <span class="checkmark"></span>
+            <span class="checkbox-label">Se souvenir de moi</span>
+          </label>
+          <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+        </div>
+
+        <!-- Bouton de connexion -->
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="loading || loginForm.invalid"
+        >
+          <span *ngIf="!loading">
+            <span class="btn-icon">🚀</span>
+            Se connecter
+          </span>
+          <span *ngIf="loading" class="spinner">
+            <span class="spinner-icon">⏳</span>
+            Connexion en cours...
+          </span>
+        </button>
+      </form>
+
+      <!-- Footer -->
+      <div class="footer-links">
+        <p class="help-text">
+          Besoin d'aide ? 
+          <a href="mailto:support@kyntus.ma">Contactez le support</a>
+        </p>
+      </div>
+
+      <!-- Copyright -->
+      <div class="copyright">
+        <p>© 2026 KYNTUS MOROCCO. Tous droits réservés.</p>
+      </div>
+    </div>
+  </div>
+</div>
